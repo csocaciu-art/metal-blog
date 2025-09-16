@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "The Rise of Djent",
+    "excerpt": "Exploring the origins and evolution of the djent subgenre.",
+    "content": "Full content of the first blog post. Djent is a subgenre of progressive metal characterized by its distinctive, palm-muted, and often heavily distorted guitar sound. It emerged in the mid-2000s, with bands like Meshuggah being pioneers of the style. The term itself is an onomatopoeia for the sound of a heavily palm-muted, low-pitched guitar chord. nice!"
+  },
+  {
+    "id": "3",
+    "title": "Thrash Metal: The enduring legacy",
+    "excerpt": "How thrash metal continues to influence new generations.",
+    "content": "Full content of the third blog post. Thrash metal is an extreme subgenre of heavy metal music characterized by its overall aggression and often fast tempo. The songs often feature fast percussive rhythms and low-register guitar riffs, overlaid with shredding-style lead guitar. Lyrical themes often involve social criticism, corruption, and anger. Metallica, Slayer, Megadeth, and Anthrax are often credited with popularizing the genre."
+  },
+  {
+    "title": "Evolution of Black Metal",
+    "excerpt": "Black metal is an extreme subgenre of heavy metal music. ",
+    "content": "Full content of the second blog post. Black metal is an extreme subgenre of heavy metal music. Common traits include fast tempos, a shrieking vocal style, heavily distorted guitars played with tremolo picking, raw recording, and unconventional song structures. During the 1980s, Bathory, Hellhammer, Mayhem, and Celtic Frost were important bands in the development of the genre.",
+    "id": "4"
+  }
+]
