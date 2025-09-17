@@ -40,11 +40,6 @@ const PostPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-dark mb-4">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">Metal Blog</a>
-        </div>
-      </nav>
       <div className="container mt-4">
         <h1>{post.title}</h1>
         <p>{post.content}</p>
