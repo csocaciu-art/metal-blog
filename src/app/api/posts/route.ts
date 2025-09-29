@@ -19,9 +19,36 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const newPost = await request.json();
+  const formData = await request.formData();
   const posts = readPosts();
-  newPost.id = (parseInt(posts[posts.length - 1].id) + 1).toString(); // Simple ID generation
+  const newPostId = (parseInt(posts[posts.length - 1].id) + 1).toString();
+  const newPost: any = {
+    id: newPostId,
+    title: formData.get('title'),
+    excerpt: formData.get('excerpt'),
+    content: formData.get('content'),
+    imageUrls: [],
+  };
+
+  const images = formData.getAll('image') as File[];
+  if (images && images.length > 0) {
+    const postImagesDir = path.join(process.cwd(), 'public', 'images', newPostId);
+    if (!fs.existsSync(postImagesDir)) {
+      fs.mkdirSync(postImagesDir, { recursive: true });
+    }
+
+    for (const image of images) {
+      if (image.size > 0) {
+        const imageName = Date.now() + '-' + image.name;
+        const imagePath = path.join(postImagesDir, imageName);
+        const bytes = await image.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        fs.writeFileSync(imagePath, buffer);
+        newPost.imageUrls.push(`/images/${newPostId}/${imageName}`);
+      }
+    }
+  }
+
   posts.push(newPost);
   writePosts(posts);
   return NextResponse.json(newPost, { status: 201 });

@@ -9,18 +9,9 @@ const NewPostPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const newPost = {
-      title: formData.get('title'),
-      excerpt: formData.get('excerpt'),
-      content: formData.get('content'),
-    };
-
     const res = await fetch('/api/posts', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
+      body: formData,
     });
 
     if (res.ok) {
@@ -46,6 +37,10 @@ const NewPostPage = () => {
           <div className="mb-3">
             <label htmlFor="content" className="form-label">Content</label>
             <textarea className="form-control" id="content" name="content" rows={10} required></textarea>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="image" className="form-label">Image</label>
+            <input type="file" className="form-control" id="image" name="image" accept="image/*" multiple />
           </div>
           <button type="submit" className="btn btn-primary">Create Post</button>
         </form>

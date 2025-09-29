@@ -6,9 +6,7 @@ export async function GET() {
   const imagesDirectory = path.join(process.cwd(), 'public', 'images');
   try {
     const filenames = await fs.promises.readdir(imagesDirectory);
-    const imageFiles = filenames.filter(file =>
-      file.endsWith('.jpeg') || file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.gif')
-    );
+    const imageFiles = filenames.filter(file => /^back\d+\.(jpg|jpeg)$/.test(file));
     return NextResponse.json(imageFiles);
   } catch (error) {
     console.error('Failed to read images directory:', error);

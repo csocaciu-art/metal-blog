@@ -44,9 +44,9 @@ export default function RootLayout({
       <body>
         <div className="container mt-4">
           <header className="d-flex justify-content-center py-3">
-            <ul className="nav nav-pills">
-              <li className="nav-item"><Link href="/" className="nav-link active" aria-current="page">Metal Blog</Link></li>
-            </ul>
+            <Link href="/">
+              <img src="/images/banner.jpg" alt="Metal Blog Banner" style={{ height: '150px' }} />
+            </Link>
           </header>
           {children}
         </div>

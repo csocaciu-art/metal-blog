@@ -21,7 +21,9 @@ const HomePage = async () => {
   return (
     <div>
       <div className="mb-4">
-        <a className="btn btn-primary btn-lg" href="/new-post" role="button">Create New Post</a>
+        <a href="/new-post">
+          <img src="/images/create_new_post.jpg" alt="Create New Post" style={{ height: '200px' }} />
+        </a>
       </div>
 
       <div className="row">
@@ -31,7 +33,9 @@ const HomePage = async () => {
               <div className="card-body">
                 <h5 className="card-title">{post.title}</h5>
                 <p className="card-text">{post.excerpt}</p>
-                <a href={`/posts/${post.id}`} className="btn btn-primary">Read More</a>
+                <a href={`/posts/${post.id}`}>
+                  <img src="/images/read_more.jpg" alt="Read More" style={{ height: '100px' }} />
+                </a>
               </div>
             </div>
           </div>
