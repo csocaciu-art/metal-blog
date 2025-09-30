@@ -50,7 +50,7 @@ export async function PUT(request: Request, { params }: { params: { slug: string
         fs.unlinkSync(imagePath);
       }
     }
-    updatedPost.imageUrls = existingImageUrls;
+    updatedPost.imageUrls = [...existingImageUrls];
 
     const newImages = formData.getAll('image') as File[];
     if (newImages && newImages.length > 0) {
