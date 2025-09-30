@@ -20,7 +20,7 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await fetch(`http://localhost:3000/api/posts/${slug}`, { cache: 'no-store' });
+      const res = await fetch(`/api/posts/${slug}`, { cache: 'no-store' });
       if (!res.ok) {
         throw new Error('Failed to fetch post');
       }
