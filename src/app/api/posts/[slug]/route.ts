@@ -4,13 +4,7 @@ import path from 'path';
 
 const postsFilePath = path.join(process.cwd(), 'posts.json');
 
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '10mb',
-    },
-  },
-};
+
 
 const readPosts = () => {
   const postsData = fs.readFileSync(postsFilePath, 'utf-8');
