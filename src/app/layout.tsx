@@ -3,6 +3,7 @@ import { Eagle_Lake } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Link from "next/link";
+import Image from "next/image";
 import BackgroundController from "./components/BackgroundController";
 
 const eagleLake = Eagle_Lake({ subsets: ["latin"], weight: "400" });
@@ -24,7 +25,14 @@ export default function RootLayout({
         <div className="container mt-4">
           <header className="d-flex justify-content-center py-3">
             <Link href="/">
-              <img src="/images/banner.jpg" alt="Metal Blog Banner" style={{ height: '150px' }} />
+              <Image
+                src="/images/banner.jpg"
+                alt="Metal Blog Banner"
+                width={800}
+                height={150}
+                style={{ height: '150px', width: 'auto' }}
+                priority
+              />
             </Link>
           </header>
           {children}

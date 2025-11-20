@@ -1,55 +1,68 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
-
-const postsFilePath = path.join(process.cwd(), 'posts.json');
-
-const readPosts = () => {
-  const postsData = fs.readFileSync(postsFilePath, 'utf-8');
-  return JSON.parse(postsData);
-};
-
-const writePosts = (posts: any[]) => {
-  fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
-};
+import {
+  buildSafeImageName,
+  filterImageFiles,
+  isAllowedImage,
+  parseRequiredField,
+} from '@/lib/postMedia';
+import { nextPostId, readPosts, writePosts, type StoredPost } from '@/lib/postsStore';
 
 export async function GET() {
-  const posts = readPosts();
+  const posts = await readPosts();
   return NextResponse.json(posts);
 }
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-  const posts = readPosts();
-  const newPostId = (parseInt(posts[posts.length - 1].id) + 1).toString();
-  const newPost: any = {
-    id: newPostId,
-    title: formData.get('title'),
-    excerpt: formData.get('excerpt'),
-    content: formData.get('content'),
-    imageUrls: [],
-  };
+  try {
+    const formData = await request.formData();
+    const title = parseRequiredField(formData, 'title');
+    const excerpt = parseRequiredField(formData, 'excerpt');
+    const content = parseRequiredField(formData, 'content');
 
-  const images = formData.getAll('image') as File[];
-  if (images && images.length > 0) {
-    const postImagesDir = path.join(process.cwd(), 'public', 'images', newPostId);
-    if (!fs.existsSync(postImagesDir)) {
-      fs.mkdirSync(postImagesDir, { recursive: true });
+    if (!title || !excerpt || !content) {
+      return NextResponse.json(
+        { error: 'title, excerpt and content are required.' },
+        { status: 400 },
+      );
     }
 
-    for (const image of images) {
-      if (image.size > 0) {
-        const imageName = Date.now() + '-' + image.name;
-        const imagePath = path.join(postImagesDir, imageName);
+    const posts = await readPosts();
+    const newPostId = nextPostId(posts);
+    const newPost: StoredPost = {
+      id: newPostId,
+      title,
+      excerpt,
+      content,
+      imageUrls: [],
+    };
+
+    const images = filterImageFiles(formData.getAll('image'));
+    if (images.length > 0) {
+      const postImagesDir = path.join(process.cwd(), 'public', 'images', newPostId);
+      await fs.mkdir(postImagesDir, { recursive: true });
+
+      for (const image of images) {
+        if (!isAllowedImage(image)) {
+          continue;
+        }
+        const sanitizedName = buildSafeImageName(image.name);
+        if (!sanitizedName) {
+          continue;
+        }
+        const imagePath = path.join(postImagesDir, sanitizedName);
         const bytes = await image.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        fs.writeFileSync(imagePath, buffer);
-        newPost.imageUrls.push(`/images/${newPostId}/${imageName}`);
+        await fs.writeFile(imagePath, Buffer.from(bytes));
+        newPost.imageUrls.push(`/images/${newPostId}/${sanitizedName}`);
       }
     }
-  }
 
-  posts.push(newPost);
-  writePosts(posts);
-  return NextResponse.json(newPost, { status: 201 });
+    posts.push(newPost);
+    await writePosts(posts);
+    return NextResponse.json(newPost, { status: 201 });
+  } catch (error) {
+    console.error('Failed to create post', error);
+    return NextResponse.json({ error: 'Failed to create post' }, { status: 500 });
+  }
 }

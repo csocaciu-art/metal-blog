@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface Post {
   id: string;
@@ -88,14 +89,14 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
               <div className="mt-2 d-flex flex-wrap">
                 {post.imageUrls && post.imageUrls.map(imageUrl => (
                   <div key={imageUrl} className="me-2 mb-2 position-relative">
-                    <img src={imageUrl} alt={post.title} width="200" />
+                    <Image src={imageUrl} alt={post.title} width={200} height={200} style={{ objectFit: 'cover' }} />
                     <button type="button" className="btn btn-danger btn-sm position-absolute top-0 end-0" onClick={() => handleImageDelete(imageUrl)}>X</button>
                   </div>
                 ))}
               </div>
             </div>
             <button type="submit" style={{ background: 'none', border: 'none' }}>
-              <img src="/images/update_post.jpg" alt="Update Post" style={{ height: '100px', cursor: 'pointer' }} />
+              <Image src="/images/update_post.jpg" alt="Update Post" width={300} height={100} style={{ height: '100px', width: 'auto', cursor: 'pointer' }} />
             </button>
           </form>
         </div>

@@ -25,9 +25,17 @@ export default function BackgroundController() {
 
   useEffect(() => {
     if (backgroundImage) {
+      const previousImage = document.body.style.backgroundImage;
+      const previousSize = document.body.style.backgroundSize;
+      const previousAttachment = document.body.style.backgroundAttachment;
       document.body.style.backgroundImage = `url(${backgroundImage})`;
       document.body.style.backgroundSize = 'cover';
       document.body.style.backgroundAttachment = 'fixed';
+      return () => {
+        document.body.style.backgroundImage = previousImage;
+        document.body.style.backgroundSize = previousSize;
+        document.body.style.backgroundAttachment = previousAttachment;
+      };
     }
   }, [backgroundImage]);
 

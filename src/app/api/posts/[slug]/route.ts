@@ -1,94 +1,118 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
+import {
+  buildSafeImageName,
+  filterImageFiles,
+  isAllowedImage,
+  parseRequiredField,
+} from '@/lib/postMedia';
+import { readPosts, writePosts, type StoredPost } from '@/lib/postsStore';
 
-const postsFilePath = path.join(process.cwd(), 'posts.json');
-
-
-
-const readPosts = () => {
-  const postsData = fs.readFileSync(postsFilePath, 'utf-8');
-  return JSON.parse(postsData);
-};
-
-const writePosts = (posts: any[]) => {
-  fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
-};
+const filterExistingUrls = (entries: FormDataEntryValue[], slug: string) =>
+  entries
+    .filter((entry): entry is string => typeof entry === 'string')
+    .filter(url => url.startsWith(`/images/${slug}/`));
 
 export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  const posts = readPosts();
-  const post = posts.find((p: any) => p.id === params.slug);
+  const posts = await readPosts();
+  const post = posts.find((p: StoredPost) => p.id === params.slug);
 
-  if (post) {
-    return NextResponse.json(post);
-  } else {
-    return new NextResponse('Post not found', { status: 404 });
+  if (!post) {
+    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
   }
+
+  return NextResponse.json(post);
 }
 
 export async function PUT(request: Request, { params }: { params: { slug: string } }) {
-  const formData = await request.formData();
-  const posts = readPosts();
-  const postIndex = posts.findIndex((p: any) => p.id === params.slug);
+  try {
+    const formData = await request.formData();
+    const title = parseRequiredField(formData, 'title');
+    const excerpt = parseRequiredField(formData, 'excerpt');
+    const content = parseRequiredField(formData, 'content');
 
-  if (postIndex !== -1) {
-    const updatedPost: any = {
-      ...posts[postIndex],
-      title: formData.get('title'),
-      excerpt: formData.get('excerpt'),
-      content: formData.get('content'),
-    };
-
-    const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
-    if (!fs.existsSync(postImagesDir)) {
-      fs.mkdirSync(postImagesDir, { recursive: true });
+    if (!title || !excerpt || !content) {
+      return NextResponse.json(
+        { error: 'title, excerpt and content are required.' },
+        { status: 400 },
+      );
     }
 
-    const existingImageUrls = formData.getAll('existingImageUrls') as string[];
-    const imagesToDelete = (posts[postIndex].imageUrls || []).filter((url: string) => !existingImageUrls.includes(url));
+    const posts = await readPosts();
+    const postIndex = posts.findIndex(post => post.id === params.slug);
+
+    if (postIndex === -1) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+
+    const existingImageUrls = filterExistingUrls(
+      formData.getAll('existingImageUrls'),
+      params.slug,
+    );
+    const currentImages = posts[postIndex].imageUrls ?? [];
+    const imagesToDelete = currentImages.filter(url => !existingImageUrls.includes(url));
+
     for (const imageUrl of imagesToDelete) {
       const imagePath = path.join(process.cwd(), 'public', imageUrl);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      }
+      await fs.rm(imagePath, { force: true });
     }
-    updatedPost.imageUrls = [...existingImageUrls];
 
-    const newImages = formData.getAll('image') as File[];
-    if (newImages && newImages.length > 0) {
+    const updatedPost: StoredPost = {
+      ...posts[postIndex],
+      title,
+      excerpt,
+      content,
+      imageUrls: [...existingImageUrls],
+    };
+
+    const newImages = filterImageFiles(formData.getAll('image'));
+    if (newImages.length > 0) {
+      const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
+      await fs.mkdir(postImagesDir, { recursive: true });
+
       for (const image of newImages) {
-        if (image.size > 0) {
-          const imageName = Date.now() + '-' + image.name;
-          const imagePath = path.join(postImagesDir, imageName);
-          const bytes = await image.arrayBuffer();
-          const buffer = Buffer.from(bytes);
-          fs.writeFileSync(imagePath, buffer);
-          updatedPost.imageUrls.push(`/images/${params.slug}/${imageName}`);
+        if (!isAllowedImage(image)) {
+          continue;
         }
+        const imageName = buildSafeImageName(image.name);
+        if (!imageName) {
+          continue;
+        }
+
+        const imagePath = path.join(postImagesDir, imageName);
+        const bytes = await image.arrayBuffer();
+        await fs.writeFile(imagePath, Buffer.from(bytes));
+        updatedPost.imageUrls.push(`/images/${params.slug}/${imageName}`);
       }
     }
 
     posts[postIndex] = updatedPost;
-    writePosts(posts);
-    return NextResponse.json(posts[postIndex]);
-  } else {
-    return new NextResponse('Post not found', { status: 404 });
+    await writePosts(posts);
+    return NextResponse.json(updatedPost);
+  } catch (error) {
+    console.error('Failed to update post', error);
+    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request, { params }: { params: { slug: string } }) {
-  let posts = readPosts();
-  const postIndex = posts.findIndex((p: any) => p.id === params.slug);
+  try {
+    const posts = await readPosts();
+    const postIndex = posts.findIndex(post => post.id === params.slug);
 
-  if (postIndex !== -1) {
-    const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
-    if (fs.existsSync(postImagesDir)) {
-      fs.rmSync(postImagesDir, { recursive: true, force: true });
+    if (postIndex === -1) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
+
+    const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
+    await fs.rm(postImagesDir, { recursive: true, force: true });
+
     posts.splice(postIndex, 1);
-    writePosts(posts);
-    return new NextResponse('Post deleted', { status: 200 });
-  } else {
-    return new NextResponse('Post not found', { status: 404 });
+    await writePosts(posts);
+    return NextResponse.json({ message: 'Post deleted' });
+  } catch (error) {
+    console.error('Failed to delete post', error);
+    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
   }
 }

@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
 import Carousel from 'react-bootstrap/Carousel';
 
 interface Post {
@@ -17,16 +19,24 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getPost = async () => {
-      const res = await fetch(`/api/posts/${slug}`, { cache: 'no-store' });
-      if (!res.ok) {
-        throw new Error('Failed to fetch post');
+      try {
+        const res = await fetch(`/api/posts/${slug}`, { cache: 'no-store' });
+        if (!res.ok) {
+          setError('Failed to fetch post');
+          return;
+        }
+        const data = await res.json();
+        setPost(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to fetch post');
+      } finally {
+        setLoading(false);
       }
-      const data = await res.json();
-      setPost(data);
-      setLoading(false);
     };
     getPost();
   }, [slug]);
@@ -48,6 +58,25 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
     return <div>Loading...</div>;
   }
 
+  if (error) {
+    return (
+      <div className="container mt-4">
+        <div className="post-content">
+          <p>{error}</p>
+          <Link href="/">
+            <Image
+              src="/images/back_to_home.jpg"
+              alt="Back to Home"
+              width={300}
+              height={100}
+              style={{ height: '100px', width: 'auto' }}
+            />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   if (!post) {
     return <div>Post not found</div>;
   }
@@ -63,22 +92,45 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
           <Carousel>
             {post.imageUrls.map((url, index) => (
               <Carousel.Item key={index}>
-                <img
-                  className="d-block w-100"
-                  src={url}
-                  alt={post.title}
-                />
+                <div style={{ position: 'relative', width: '100%', height: '500px' }}>
+                  <Image
+                    src={url}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 1200px) 100vw, 1200px"
+                    style={{ objectFit: 'contain' }}
+                  />
+                </div>
               </Carousel.Item>
             ))}
           </Carousel>
         )}
-        <a href="/">
-          <img src="/images/back_to_home.jpg" alt="Back to Home" style={{ height: '100px' }} />
-        </a>
-        <a href={`/edit-post/${post.id}`}>
-          <img src="/images/edit_post.jpg" alt="Edit Post" style={{ height: '100px' }} />
-        </a>
-        <img src="/images/delete_post.jpg" alt="Delete Post" style={{ height: '100px', cursor: 'pointer' }} onClick={handleDelete} />
+        <Link href="/">
+          <Image
+            src="/images/back_to_home.jpg"
+            alt="Back to Home"
+            width={300}
+            height={100}
+            style={{ height: '100px', width: 'auto' }}
+          />
+        </Link>
+        <Link href={`/edit-post/${post.id}`}>
+          <Image
+            src="/images/edit_post.jpg"
+            alt="Edit Post"
+            width={300}
+            height={100}
+            style={{ height: '100px', width: 'auto' }}
+          />
+        </Link>
+        <Image
+          src="/images/delete_post.jpg"
+          alt="Delete Post"
+          width={300}
+          height={100}
+          style={{ height: '100px', width: 'auto', cursor: 'pointer' }}
+          onClick={handleDelete}
+        />
       </div>
     </div>
   );
