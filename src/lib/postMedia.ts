@@ -18,8 +18,10 @@ export const filterImageFiles = (entries: FormDataEntryValue[]) =>
 
 export const isAllowedImage = (file: File) =>
   file.size > 0 &&
-  allowedMimePrefixes.some(prefix => file.type?.startsWith(prefix)) &&
-  allowedExtensions.has(path.extname(path.basename(file.name || '')).toLowerCase());
+  allowedMimePrefixes.some((prefix) => file.type?.startsWith(prefix)) &&
+  allowedExtensions.has(
+    path.extname(path.basename(file.name || '')).toLowerCase()
+  );
 
 export const buildSafeImageName = (originalName: string) => {
   const ext = path.extname(path.basename(originalName || '')).toLowerCase();
@@ -28,4 +30,3 @@ export const buildSafeImageName = (originalName: string) => {
   }
   return `${Date.now()}-${randomUUID()}${ext}`;
 };
-

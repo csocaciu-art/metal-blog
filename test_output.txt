@@ -1,0 +1,34 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/shared/andrei/atestat/metal-blog[39m
+
+ [33mΓ¥»[39m src/lib/__tests__/postsStore.test.ts [2m ([22m[2m0 test[22m[2m)[22m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts [ src/lib/__tests__/postsStore.test.ts ]
+Error: [vitest] No "default" export is defined on the "fs" mock. Did you forget to return it from "vi.mock"?
+If you need to partially mock a module, you can use "importOriginal" helper inside:
+
+vi.mock("fs", async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    // your mocked methods
+  }
+})
+
+ Γ¥» src/lib/postsStore.ts:1:32
+      1| import { promises as fs } from 'fs';
+       |                                ^
+      2| import path from 'path';
+      3| 
+ Γ¥» src/lib/__tests__/postsStore.test.ts:14:25
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [2mno tests[22m
+[2m   Start at [22m 15:49:49
+[2m   Duration [22m 3.48s[2m (transform 103ms, setup 0ms, collect 0ms, tests 0ms, environment 2.42s, prepare 486ms)[22m
+

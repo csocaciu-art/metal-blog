@@ -27,22 +27,57 @@ const NewPostPage = () => {
         <h1>Create New Post</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="title" className="form-label">Title</label>
-            <input type="text" className="form-control" id="title" name="title" required />
+            <label htmlFor="title" className="form-label">
+              Title
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              name="title"
+              required
+            />
           </div>
           <div className="mb-3">
-            <label htmlFor="excerpt" className="form-label">Excerpt</label>
-            <textarea className="form-control" id="excerpt" name="excerpt" rows={3} required></textarea>
+            <label htmlFor="excerpt" className="form-label">
+              Excerpt
+            </label>
+            <textarea
+              className="form-control"
+              id="excerpt"
+              name="excerpt"
+              rows={3}
+              required
+            ></textarea>
           </div>
           <div className="mb-3">
-            <label htmlFor="content" className="form-label">Content</label>
-            <textarea className="form-control" id="content" name="content" rows={10} required></textarea>
+            <label htmlFor="content" className="form-label">
+              Content
+            </label>
+            <textarea
+              className="form-control"
+              id="content"
+              name="content"
+              rows={10}
+              required
+            ></textarea>
           </div>
           <div className="mb-3">
-            <label htmlFor="image" className="form-label">Image</label>
-            <input type="file" className="form-control" id="image" name="image" accept="image/*" multiple />
+            <label htmlFor="image" className="form-label">
+              Image
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              id="image"
+              name="image"
+              accept="image/*"
+              multiple
+            />
           </div>
-          <button type="submit" className="btn btn-primary">Create Post</button>
+          <button type="submit" className="btn btn-primary">
+            Create Post
+          </button>
         </form>
       </div>
     </div>

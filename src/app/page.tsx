@@ -1,31 +1,9 @@
-import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { headers } from 'next/headers';
-
-interface Post {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-}
-
-async function getPosts(): Promise<Post[]> {
-  const headerList = headers();
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (headerList.get('host')
-      ? `${headerList.get('x-forwarded-proto') ?? 'http'}://${headerList.get('host')}`
-      : '');
-  const res = await fetch(`${baseUrl}/api/posts`, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error('Failed to fetch posts');
-  }
-  return res.json();
-}
+import { readPosts } from '@/lib/postsStore';
 
 const HomePage = async () => {
-  const posts = await getPosts();
+  const posts = await readPosts();
 
   return (
     <div>

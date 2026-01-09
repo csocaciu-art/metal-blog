@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export default function BackgroundController() {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
@@ -11,7 +11,7 @@ export default function BackgroundController() {
         const response = await fetch('/api/images');
         const filenames: string[] = await response.json();
         if (filenames.length > 0) {
-          const images = filenames.map(name => `/images/${name}`);
+          const images = filenames.map((name) => `/images/${name}`);
           const randomIndex = Math.floor(Math.random() * images.length);
           setBackgroundImage(images[randomIndex]);
         }

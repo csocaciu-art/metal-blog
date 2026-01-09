@@ -7,7 +7,12 @@ import {
   isAllowedImage,
   parseRequiredField,
 } from '@/lib/postMedia';
-import { nextPostId, readPosts, writePosts, type StoredPost } from '@/lib/postsStore';
+import {
+  nextPostId,
+  readPosts,
+  writePosts,
+  type StoredPost,
+} from '@/lib/postsStore';
 
 export async function GET() {
   const posts = await readPosts();
@@ -24,7 +29,7 @@ export async function POST(request: Request) {
     if (!title || !excerpt || !content) {
       return NextResponse.json(
         { error: 'title, excerpt and content are required.' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -40,7 +45,12 @@ export async function POST(request: Request) {
 
     const images = filterImageFiles(formData.getAll('image'));
     if (images.length > 0) {
-      const postImagesDir = path.join(process.cwd(), 'public', 'images', newPostId);
+      const postImagesDir = path.join(
+        process.cwd(),
+        'public',
+        'images',
+        newPostId
+      );
       await fs.mkdir(postImagesDir, { recursive: true });
 
       for (const image of images) {
@@ -63,6 +73,9 @@ export async function POST(request: Request) {
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
     console.error('Failed to create post', error);
-    return NextResponse.json({ error: 'Failed to create post' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to create post' },
+      { status: 500 }
+    );
   }
 }

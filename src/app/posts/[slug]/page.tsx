@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -92,7 +92,13 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
           <Carousel>
             {post.imageUrls.map((url, index) => (
               <Carousel.Item key={index}>
-                <div style={{ position: 'relative', width: '100%', height: '500px' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    height: '500px',
+                  }}
+                >
                   <Image
                     src={url}
                     alt={post.title}

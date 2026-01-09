@@ -1,0 +1,56 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/shared/andrei/atestat/metal-blog[39m
+
+ [33mΓ¥»[39m src/lib/__tests__/postsStore.test.ts [2m ([22m[2m6 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 11[2mms[22m[39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould return posts when file exists[39m
+[31m     ΓåÆ Cannot read properties of undefined (reading 'readFile')[39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould return empty array and create file if file does not exist (ENOENT)[39m
+[31m     ΓåÆ Cannot read properties of undefined (reading 'readFile')[39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould throw other errors[39m
+[31m     ΓåÆ expected [Function] to throw error including 'Other error' but got 'Cannot read properties of undefined (ΓÇª'[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 3 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should return posts when file exists
+TypeError: Cannot read properties of undefined (reading 'readFile')
+ Γ¥» Module.readPosts src/lib/postsStore.ts:16:32
+     14| export async function readPosts(): Promise<StoredPost[]> {
+     15|   try {
+     16|     const postsData = await fs.readFile(postsFilePath, 'utf-8');
+       |                                ^
+     17|     const parsed = JSON.parse(postsData);
+     18|     return Array.isArray(parsed) ? parsed : [];
+ Γ¥» src/lib/__tests__/postsStore.test.ts:36:33
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/3]ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should return empty array and create file if file does not exist (ENOENT)
+TypeError: Cannot read properties of undefined (reading 'readFile')
+ Γ¥» Module.readPosts src/lib/postsStore.ts:16:32
+     14| export async function readPosts(): Promise<StoredPost[]> {
+     15|   try {
+     16|     const postsData = await fs.readFile(postsFilePath, 'utf-8');
+       |                                ^
+     17|     const parsed = JSON.parse(postsData);
+     18|     return Array.isArray(parsed) ? parsed : [];
+ Γ¥» src/lib/__tests__/postsStore.test.ts:45:33
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/3]ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should throw other errors
+AssertionError: expected [Function] to throw error including 'Other error' but got 'Cannot read properties of undefined (ΓÇª'
+
+- Expected
++ Received
+
+- Other error
++ Cannot read properties of undefined (reading 'readFile')
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/3]ΓÄ»
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 15:50:49
+[2m   Duration [22m 2.27s[2m (transform 82ms, setup 0ms, collect 74ms, tests 11ms, environment 1.35s, prepare 373ms)[22m
+

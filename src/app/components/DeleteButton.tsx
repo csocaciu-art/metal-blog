@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
@@ -23,7 +23,9 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ postId }) => {
   };
 
   return (
-    <button onClick={handleDelete} className="btn btn-danger">Delete Post</button>
+    <button onClick={handleDelete} className="btn btn-danger">
+      Delete Post
+    </button>
   );
 };
 

@@ -36,7 +36,9 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     if (post?.imageUrls) {
-      post.imageUrls.forEach(url => formData.append('existingImageUrls', url));
+      post.imageUrls.forEach((url) =>
+        formData.append('existingImageUrls', url)
+      );
     }
     const res = await fetch(`/api/posts/${slug}`, {
       method: 'PUT',
@@ -52,7 +54,9 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
 
   const handleImageDelete = (imageUrl: string) => {
     if (post) {
-      const updatedImageUrls = post.imageUrls?.filter(url => url !== imageUrl);
+      const updatedImageUrls = post.imageUrls?.filter(
+        (url) => url !== imageUrl
+      );
       setPost({ ...post, imageUrls: updatedImageUrls });
     }
   };
@@ -72,31 +76,89 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
           <h1>Edit Post</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="title" className="form-label">Title</label>
-              <input type="text" className="form-control" id="title" name="title" defaultValue={post.title} required />
+              <label htmlFor="title" className="form-label">
+                Title
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="title"
+                name="title"
+                defaultValue={post.title}
+                required
+              />
             </div>
             <div className="mb-3">
-              <label htmlFor="excerpt" className="form-label">Excerpt</label>
-              <textarea className="form-control" id="excerpt" name="excerpt" rows={3} defaultValue={post.excerpt} required></textarea>
+              <label htmlFor="excerpt" className="form-label">
+                Excerpt
+              </label>
+              <textarea
+                className="form-control"
+                id="excerpt"
+                name="excerpt"
+                rows={3}
+                defaultValue={post.excerpt}
+                required
+              ></textarea>
             </div>
             <div className="mb-3">
-              <label htmlFor="content" className="form-label">Content</label>
-              <textarea className="form-control" id="content" name="content" rows={10} defaultValue={post.content} required></textarea>
+              <label htmlFor="content" className="form-label">
+                Content
+              </label>
+              <textarea
+                className="form-control"
+                id="content"
+                name="content"
+                rows={10}
+                defaultValue={post.content}
+                required
+              ></textarea>
             </div>
             <div className="mb-3">
-              <label htmlFor="image" className="form-label">Images</label>
-              <input type="file" className="form-control" id="image" name="image" accept="image/*" multiple />
+              <label htmlFor="image" className="form-label">
+                Images
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="image"
+                name="image"
+                accept="image/*"
+                multiple
+              />
               <div className="mt-2 d-flex flex-wrap">
-                {post.imageUrls && post.imageUrls.map(imageUrl => (
-                  <div key={imageUrl} className="me-2 mb-2 position-relative">
-                    <Image src={imageUrl} alt={post.title} width={200} height={200} style={{ objectFit: 'cover' }} />
-                    <button type="button" className="btn btn-danger btn-sm position-absolute top-0 end-0" onClick={() => handleImageDelete(imageUrl)}>X</button>
-                  </div>
-                ))}
+                {post.imageUrls &&
+                  post.imageUrls.map((imageUrl) => (
+                    <div key={imageUrl} className="me-2 mb-2 position-relative">
+                      <Image
+                        src={imageUrl}
+                        alt={post.title}
+                        width={200}
+                        height={200}
+                        style={{ objectFit: 'cover' }}
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm position-absolute top-0 end-0"
+                        onClick={() => handleImageDelete(imageUrl)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
               </div>
             </div>
-            <button type="submit" style={{ background: 'none', border: 'none' }}>
-              <Image src="/images/update_post.jpg" alt="Update Post" width={300} height={100} style={{ height: '100px', width: 'auto', cursor: 'pointer' }} />
+            <button
+              type="submit"
+              style={{ background: 'none', border: 'none' }}
+            >
+              <Image
+                src="/images/update_post.jpg"
+                alt="Update Post"
+                width={300}
+                height={100}
+                style={{ height: '100px', width: 'auto', cursor: 'pointer' }}
+              />
             </button>
           </form>
         </div>

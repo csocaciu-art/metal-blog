@@ -16,8 +16,13 @@ export async function readPosts(): Promise<StoredPost[]> {
     const postsData = await fs.readFile(postsFilePath, 'utf-8');
     const parsed = JSON.parse(postsData);
     return Array.isArray(parsed) ? parsed : [];
-  } catch (error: any) {
-    if (error?.code === 'ENOENT') {
+  } catch (error: unknown) {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      (error as { code: string }).code === 'ENOENT'
+    ) {
       await fs.writeFile(postsFilePath, '[]', 'utf-8');
       return [];
     }
@@ -36,4 +41,3 @@ export function nextPostId(posts: StoredPost[]): string {
   }, 0);
   return String(maxId + 1);
 }
-

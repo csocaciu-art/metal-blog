@@ -12,9 +12,12 @@ import { readPosts, writePosts, type StoredPost } from '@/lib/postsStore';
 const filterExistingUrls = (entries: FormDataEntryValue[], slug: string) =>
   entries
     .filter((entry): entry is string => typeof entry === 'string')
-    .filter(url => url.startsWith(`/images/${slug}/`));
+    .filter((url) => url.startsWith(`/images/${slug}/`));
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
   const posts = await readPosts();
   const post = posts.find((p: StoredPost) => p.id === params.slug);
 
@@ -25,7 +28,10 @@ export async function GET(request: Request, { params }: { params: { slug: string
   return NextResponse.json(post);
 }
 
-export async function PUT(request: Request, { params }: { params: { slug: string } }) {
+export async function PUT(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
   try {
     const formData = await request.formData();
     const title = parseRequiredField(formData, 'title');
@@ -35,12 +41,12 @@ export async function PUT(request: Request, { params }: { params: { slug: string
     if (!title || !excerpt || !content) {
       return NextResponse.json(
         { error: 'title, excerpt and content are required.' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
     const posts = await readPosts();
-    const postIndex = posts.findIndex(post => post.id === params.slug);
+    const postIndex = posts.findIndex((post) => post.id === params.slug);
 
     if (postIndex === -1) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -48,10 +54,12 @@ export async function PUT(request: Request, { params }: { params: { slug: string
 
     const existingImageUrls = filterExistingUrls(
       formData.getAll('existingImageUrls'),
-      params.slug,
+      params.slug
     );
     const currentImages = posts[postIndex].imageUrls ?? [];
-    const imagesToDelete = currentImages.filter(url => !existingImageUrls.includes(url));
+    const imagesToDelete = currentImages.filter(
+      (url) => !existingImageUrls.includes(url)
+    );
 
     for (const imageUrl of imagesToDelete) {
       const imagePath = path.join(process.cwd(), 'public', imageUrl);
@@ -68,7 +76,12 @@ export async function PUT(request: Request, { params }: { params: { slug: string
 
     const newImages = filterImageFiles(formData.getAll('image'));
     if (newImages.length > 0) {
-      const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
+      const postImagesDir = path.join(
+        process.cwd(),
+        'public',
+        'images',
+        params.slug
+      );
       await fs.mkdir(postImagesDir, { recursive: true });
 
       for (const image of newImages) {
@@ -92,20 +105,31 @@ export async function PUT(request: Request, { params }: { params: { slug: string
     return NextResponse.json(updatedPost);
   } catch (error) {
     console.error('Failed to update post', error);
-    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to update post' },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { slug: string } }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
   try {
     const posts = await readPosts();
-    const postIndex = posts.findIndex(post => post.id === params.slug);
+    const postIndex = posts.findIndex((post) => post.id === params.slug);
 
     if (postIndex === -1) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    const postImagesDir = path.join(process.cwd(), 'public', 'images', params.slug);
+    const postImagesDir = path.join(
+      process.cwd(),
+      'public',
+      'images',
+      params.slug
+    );
     await fs.rm(postImagesDir, { recursive: true, force: true });
 
     posts.splice(postIndex, 1);
@@ -113,6 +137,9 @@ export async function DELETE(request: Request, { params }: { params: { slug: str
     return NextResponse.json({ message: 'Post deleted' });
   } catch (error) {
     console.error('Failed to delete post', error);
-    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to delete post' },
+      { status: 500 }
+    );
   }
 }

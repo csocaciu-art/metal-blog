@@ -1,0 +1,148 @@
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/shared/andrei/atestat/metal-blog[39m
+
+ [33mΓ¥»[39m src/lib/__tests__/postsStore.test.ts [2m ([22m[2m6 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 25[2mms[22m[39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould return posts when file exists[39m
+[31m     ΓåÆ expected [ { id: '1', ΓÇª(5) }, ΓÇª(2) ] to deeply equal [ { id: '1', ΓÇª(4) } ][39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould return empty array and create file if file does not exist (ENOENT)[39m
+[31m     ΓåÆ expected [ { id: '1', ΓÇª(5) }, ΓÇª(2) ] to deeply equal [][39m
+[31m   [33mΓ¥»[31m src/lib/__tests__/postsStore.test.ts[2m > [22mpostsStore[2m > [22mreadPosts[2m > [22mshould throw other errors[39m
+[31m     ΓåÆ promise resolved "[ { id: '1', ΓÇª(5) }, ΓÇª(2) ]" instead of rejecting[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Tests 3 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should return posts when file exists
+AssertionError: expected [ { id: '1', ΓÇª(5) }, ΓÇª(2) ] to deeply equal [ { id: '1', ΓÇª(4) } ]
+
+- Expected
++ Received
+
+  Array [
+    Object {
+-     "content": "Content",
+-     "excerpt": "Excerpt",
++     "content": "Full content of the first blog post. Djent is a subgenre of progressive metal characterized by its distinctive, palm-muted, and often heavily distorted guitar sound. It emerged in the mid-2000s, with bands like Meshuggah being pioneers of the style. The term itself is an onomatopoeia for the sound of a heavily palm-muted, low-pitched guitar chord. nice!",
++     "excerpt": "Exploring the origins and evolution of the djent subgenre.",
+      "id": "1",
+-     "imageUrls": Array [],
+-     "title": "Test Post",
++     "imageUrl": "/images/1759140082742-",
++     "imageUrls": Array [
++       "/images/1/1759403720503-Meshuggah-Band-no-AI-filter-Hint-of-Blue-less-sat.webp",
++     ],
++     "title": "The Rise of Djent",
++   },
++   Object {
++     "content": "Full content of the third blog post. Thrash metal is an extreme subgenre of heavy metal music characterized by its overall aggression and often fast tempo. The songs often feature fast percussive rhythms and low-register guitar riffs, overlaid with shredding-style lead guitar. Lyrical themes often involve social criticism, corruption, and anger. Metallica, Slayer, Megadeth, and Anthrax are often credited with popularizing the genre.",
++     "excerpt": "How thrash metal continues to influence new generations.",
++     "id": "3",
++     "title": "Thrash Metal: The enduring legacy",
++   },
++   Object {
++     "content": "Full content of the second blog post. Black metal is an extreme subgenre of heavy metal music. Common traits include fast tempos, a shrieking vocal style, heavily distorted guitars played with tremolo picking, raw recording, and unconventional song structures. During the 1980s, Bathory, Hellhammer, Mayhem, and Celtic Frost were important bands in the development of the genre.",
++     "excerpt": "Black metal is an extreme subgenre of heavy metal music. ",
++     "id": "4",
++     "title": "Evolution of Black Metal",
+    },
+  ]
+
+ Γ¥» src/lib/__tests__/postsStore.test.ts:41:27
+     39| 
+     40|             const posts = await readPosts();
+     41|             expect(posts).toEqual(mockPosts);
+       |                           ^
+     42|         });
+     43| 
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/3]ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should return empty array and create file if file does not exist (ENOENT)
+AssertionError: expected [ { id: '1', ΓÇª(5) }, ΓÇª(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   Object {
++     "content": "Full content of the first blog post. Djent is a subgenre of progressive metal characterized by its distinctive, palm-muted, and often heavily distorted guitar sound. It emerged in the mid-2000s, with bands like Meshuggah being pioneers of the style. The term itself is an onomatopoeia for the sound of a heavily palm-muted, low-pitched guitar chord. nice!",
++     "excerpt": "Exploring the origins and evolution of the djent subgenre.",
++     "id": "1",
++     "imageUrl": "/images/1759140082742-",
++     "imageUrls": Array [
++       "/images/1/1759403720503-Meshuggah-Band-no-AI-filter-Hint-of-Blue-less-sat.webp",
++     ],
++     "title": "The Rise of Djent",
++   },
++   Object {
++     "content": "Full content of the third blog post. Thrash metal is an extreme subgenre of heavy metal music characterized by its overall aggression and often fast tempo. The songs often feature fast percussive rhythms and low-register guitar riffs, overlaid with shredding-style lead guitar. Lyrical themes often involve social criticism, corruption, and anger. Metallica, Slayer, Megadeth, and Anthrax are often credited with popularizing the genre.",
++     "excerpt": "How thrash metal continues to influence new generations.",
++     "id": "3",
++     "title": "Thrash Metal: The enduring legacy",
++   },
++   Object {
++     "content": "Full content of the second blog post. Black metal is an extreme subgenre of heavy metal music. Common traits include fast tempos, a shrieking vocal style, heavily distorted guitars played with tremolo picking, raw recording, and unconventional song structures. During the 1980s, Bathory, Hellhammer, Mayhem, and Celtic Frost were important bands in the development of the genre.",
++     "excerpt": "Black metal is an extreme subgenre of heavy metal music. ",
++     "id": "4",
++     "title": "Evolution of Black Metal",
++   },
++ ]
+
+ Γ¥» src/lib/__tests__/postsStore.test.ts:50:27
+     48| 
+     49|             const posts = await readPosts();
+     50|             expect(posts).toEqual([]);
+       |                           ^
+     51|             expect(fs.writeFile).toHaveBeenCalledWith(expect.stringConΓÇª
+     52|         });
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[2/3]ΓÄ»
+
+ FAIL  src/lib/__tests__/postsStore.test.ts > postsStore > readPosts > should throw other errors
+AssertionError: promise resolved "[ { id: '1', ΓÇª(5) }, ΓÇª(2) ]" instead of rejecting
+
+- Expected: 
+[Error: rejected promise]
+
++ Received: 
+Array [
+  Object {
+    "content": "Full content of the first blog post. Djent is a subgenre of progressive metal characterized by its distinctive, palm-muted, and often heavily distorted guitar sound. It emerged in the mid-2000s, with bands like Meshuggah being pioneers of the style. The term itself is an onomatopoeia for the sound of a heavily palm-muted, low-pitched guitar chord. nice!",
+    "excerpt": "Exploring the origins and evolution of the djent subgenre.",
+    "id": "1",
+    "imageUrl": "/images/1759140082742-",
+    "imageUrls": Array [
+      "/images/1/1759403720503-Meshuggah-Band-no-AI-filter-Hint-of-Blue-less-sat.webp",
+    ],
+    "title": "The Rise of Djent",
+  },
+  Object {
+    "content": "Full content of the third blog post. Thrash metal is an extreme subgenre of heavy metal music characterized by its overall aggression and often fast tempo. The songs often feature fast percussive rhythms and low-register guitar riffs, overlaid with shredding-style lead guitar. Lyrical themes often involve social criticism, corruption, and anger. Metallica, Slayer, Megadeth, and Anthrax are often credited with popularizing the genre.",
+    "excerpt": "How thrash metal continues to influence new generations.",
+    "id": "3",
+    "title": "Thrash Metal: The enduring legacy",
+  },
+  Object {
+    "content": "Full content of the second blog post. Black metal is an extreme subgenre of heavy metal music. Common traits include fast tempos, a shrieking vocal style, heavily distorted guitars played with tremolo picking, raw recording, and unconventional song structures. During the 1980s, Bathory, Hellhammer, Mayhem, and Celtic Frost were important bands in the development of the genre.",
+    "excerpt": "Black metal is an extreme subgenre of heavy metal music. ",
+    "id": "4",
+    "title": "Evolution of Black Metal",
+  },
+]
+
+ Γ¥» src/lib/__tests__/postsStore.test.ts:58:37
+     56|             (fs.readFile as any).mockRejectedValue(error);
+     57| 
+     58|             await expect(readPosts()).rejects.toThrow('Other error');
+       |                                     ^
+     59|         });
+     60|     });
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[3/3]ΓÄ»
+
+[2m      Tests [22m [1m[31m3 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 15:52:07
+[2m   Duration [22m 2.35s[2m (transform 71ms, setup 0ms, collect 85ms, tests 25ms, environment 1.39s, prepare 377ms)[22m
+

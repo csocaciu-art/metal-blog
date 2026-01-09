@@ -1,16 +1,21 @@
-import type { Metadata } from "next";
-import { Eagle_Lake } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Eagle_Lake } from 'next/font/google';
+import './globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Link from "next/link";
-import Image from "next/image";
-import BackgroundController from "./components/BackgroundController";
+import Link from 'next/link';
+import Image from 'next/image';
+import BackgroundController from './components/BackgroundController';
 
-const eagleLake = Eagle_Lake({ subsets: ["latin"], weight: "400" });
+const eagleLake = Eagle_Lake({ subsets: ['latin'], weight: '400' });
 
 export const metadata: Metadata = {
-  title: "Metal Blog",
-  description: "A blog about metal music",
+  title: 'Metal Blog',
+  description: 'A blog about metal music',
+  openGraph: {
+    title: 'Metal Blog',
+    description: 'A blog about metal music',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

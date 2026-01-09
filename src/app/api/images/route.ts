@@ -6,10 +6,15 @@ export async function GET() {
   const imagesDirectory = path.join(process.cwd(), 'public', 'images');
   try {
     const filenames = await fs.promises.readdir(imagesDirectory);
-    const imageFiles = filenames.filter(file => /^back\d+\.(jpg|jpeg)$/.test(file));
+    const imageFiles = filenames.filter((file) =>
+      /^back\d+\.(jpg|jpeg)$/.test(file)
+    );
     return NextResponse.json(imageFiles);
   } catch (error) {
     console.error('Failed to read images directory:', error);
-    return NextResponse.json({ error: 'Failed to load images' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to load images' },
+      { status: 500 }
+    );
   }
 }
