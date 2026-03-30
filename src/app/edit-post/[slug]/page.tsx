@@ -12,9 +12,11 @@ interface Post {
   imageUrls?: string[];
 }
 
-const EditPostPage = ({ params }: { params: { slug: string } }) => {
+type EditPostParams = { slug: string };
+
+const EditPostPage = ({ params }: { params: Promise<EditPostParams> }) => {
   const router = useRouter();
-  const { slug } = params;
+  const { slug } = React.use(params);   // unwrap params
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -157,7 +159,7 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
                 alt="Update Post"
                 width={300}
                 height={100}
-                style={{ height: '100px', width: 'auto', cursor: 'pointer' }}
+		style={{ width: 'auto', height: '100px', cursor: 'pointer' }}
               />
             </button>
           </form>
@@ -168,3 +170,4 @@ const EditPostPage = ({ params }: { params: { slug: string } }) => {
 };
 
 export default EditPostPage;
+

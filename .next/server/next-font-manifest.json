@@ -1,1 +1,22 @@
-{"pages":{},"app":{},"appUsingSizeAdjust":false,"pagesUsingSizeAdjust":false}
+{
+  "app": {
+    "[project]/metal-blog/src/app/_not-found/page": [
+      "static/media/8e8231ccdd0c4431-s.p.08o~jif-g1~ar.woff2"
+    ],
+    "[project]/metal-blog/src/app/edit-post/[slug]/page": [
+      "static/media/8e8231ccdd0c4431-s.p.08o~jif-g1~ar.woff2"
+    ],
+    "[project]/metal-blog/src/app/new-post/page": [
+      "static/media/8e8231ccdd0c4431-s.p.08o~jif-g1~ar.woff2"
+    ],
+    "[project]/metal-blog/src/app/page": [
+      "static/media/8e8231ccdd0c4431-s.p.08o~jif-g1~ar.woff2"
+    ],
+    "[project]/metal-blog/src/app/posts/[slug]/page": [
+      "static/media/8e8231ccdd0c4431-s.p.08o~jif-g1~ar.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

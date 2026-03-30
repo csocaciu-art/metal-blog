@@ -14,9 +14,11 @@ interface Post {
   imageUrls?: string[];
 }
 
-const PostPage = ({ params }: { params: { slug: string } }) => {
+type PostParams = { slug: string };
+
+const PostPage = ({ params }: { params: Promise<PostParams> }) => {
   const router = useRouter();
-  const { slug } = params;
+  const { slug } = React.use(params);   // unwrap params
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -143,3 +145,4 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
 };
 
 export default PostPage;
+

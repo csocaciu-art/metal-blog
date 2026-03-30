@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
 import {
@@ -16,10 +17,12 @@ const filterExistingUrls = (entries: FormDataEntryValue[], slug: string) =>
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const posts = await readPosts();
-  const post = posts.find((p: StoredPost) => p.id === params.slug);
+  const { slug } = await params;          // unwrap params
+
+  const post = posts.find((p: StoredPost) => p.id === slug);
 
   if (!post) {
     return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -30,9 +33,11 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;          // <-- unwrap params
+
     const formData = await request.formData();
     const title = parseRequiredField(formData, 'title');
     const excerpt = parseRequiredField(formData, 'excerpt');
@@ -46,7 +51,7 @@ export async function PUT(
     }
 
     const posts = await readPosts();
-    const postIndex = posts.findIndex((post) => post.id === params.slug);
+    const postIndex = posts.findIndex((post) => post.id === slug);   // <-- use plain slug
 
     if (postIndex === -1) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -54,7 +59,7 @@ export async function PUT(
 
     const existingImageUrls = filterExistingUrls(
       formData.getAll('existingImageUrls'),
-      params.slug
+      slug   // <-- use slug here too
     );
     const currentImages = posts[postIndex].imageUrls ?? [];
     const imagesToDelete = currentImages.filter(
@@ -80,7 +85,7 @@ export async function PUT(
         process.cwd(),
         'public',
         'images',
-        params.slug
+        slug   // <-- use slug
       );
       await fs.mkdir(postImagesDir, { recursive: true });
 
@@ -96,7 +101,7 @@ export async function PUT(
         const imagePath = path.join(postImagesDir, imageName);
         const bytes = await image.arrayBuffer();
         await fs.writeFile(imagePath, Buffer.from(bytes));
-        updatedPost.imageUrls.push(`/images/${params.slug}/${imageName}`);
+        updatedPost.imageUrls.push(`/images/${slug}/${imageName}`);   // <-- use slug
       }
     }
 
@@ -114,11 +119,13 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await params;          // <-- unwrap params
+
     const posts = await readPosts();
-    const postIndex = posts.findIndex((post) => post.id === params.slug);
+    const postIndex = posts.findIndex((post) => post.id === slug);
 
     if (postIndex === -1) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -128,7 +135,7 @@ export async function DELETE(
       process.cwd(),
       'public',
       'images',
-      params.slug
+      slug   // <-- use plain slug
     );
     await fs.rm(postImagesDir, { recursive: true, force: true });
 
@@ -143,3 +150,4 @@ export async function DELETE(
     );
   }
 }
+
