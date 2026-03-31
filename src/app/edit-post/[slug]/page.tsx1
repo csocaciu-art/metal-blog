@@ -159,7 +159,7 @@ const EditPostPage = ({ params }: { params: Promise<EditPostParams> }) => {
                 alt="Update Post"
                 width={300}
                 height={100}
-                style={{ width: 'auto', height: 'auto', cursor: 'pointer' }}
+		style={{ width: 'auto', height: '100px', cursor: 'pointer' }}
               />
             </button>
           </form>

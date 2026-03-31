@@ -14,12 +14,23 @@
     "title": "Thrash Metal: The enduring legacy",
     "excerpt": "How thrash metal continues to influence new generations.",
     "content": "Full content of the third blog post. Thrash metal is an extreme subgenre of heavy metal music characterized by its overall aggression and often fast tempo. The songs often feature fast percussive rhythms and low-register guitar riffs, overlaid with shredding-style lead guitar. Lyrical themes often involve social criticism, corruption, and anger. Metallica, Slayer, Megadeth, and Anthrax are often credited with popularizing the genre.",
-    "imageUrls": []
+    "imageUrls": [
+      "/images/3/1774964515881-28f2bb0c-61c7-4a2d-8549-c0245ae35547.jpg",
+      "/images/3/1774965296604-7cf98a8d-9490-470b-bc80-40b5f163283f.jpg",
+      "/images/3/1774965314709-493f411d-0a25-4c8a-95aa-52006b84afb3.jpg",
+      "/images/3/1774965314711-ca2ac20a-3fc0-48a2-be55-5d10d65766ec.webp"
+    ]
   },
   {
     "title": "Evolution of Black Metal",
-    "excerpt": "Black metal is an extreme subgenre of heavy metal music. ",
+    "excerpt": "Black metal is an extreme subgenre of heavy metal music.",
     "content": "Full content of the second blog post. Black metal is an extreme subgenre of heavy metal music. Common traits include fast tempos, a shrieking vocal style, heavily distorted guitars played with tremolo picking, raw recording, and unconventional song structures. During the 1980s, Bathory, Hellhammer, Mayhem, and Celtic Frost were important bands in the development of the genre.",
-    "id": "4"
+    "id": "4",
+    "imageUrls": [
+      "/images/4/1774965705102-92dcb881-f05e-403e-8b70-2941ddb7d3b6.jpg",
+      "/images/4/1774965705108-03cc592b-6534-4a58-839b-941a7eb7bd35.webp",
+      "/images/4/1774965705110-492e5870-faf8-4b7c-b392-9de0b30f3445.jpg",
+      "/images/4/1774965705112-03ae5c90-331d-4b6f-af9a-208c466de59e.jpeg"
+    ]
   }
 ]
